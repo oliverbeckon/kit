@@ -1,0 +1,32 @@
+Syntax:
+    variable assignment statement is like this
+        x : 3
+        y: 5
+        z:2
+
+    Expressions
+        2 + 3: 5
+        2 - 3: -1
+        2 * 3: 6
+        6 / 2: 3
+        6 ** 2: 36 (to the power of)
+        9 // 2: 3 (square root)
+        7 % 2: 1 (modulus)
+
+    Comparisons
+        x :: 3 (true if x is 3)
+        x !: 3 (true if x is not 3)
+        x > 3 (true if x is greater then 3)
+        x < 3 (true if x is less then 3)
+        x >: (true if x is greater then or equal to 3)
+        x <: (true if x is less then or equal to 3)
+
+    print
+        say(variable) 
+
+    comments
+        #none of this will be interpreted
+        this will
+    
+    
+
