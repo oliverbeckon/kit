@@ -40,11 +40,13 @@ class BinOpNode(ASTNode):
         self.left = left
         self.op = op
         self.right = right
+        
 
 class AssignNode(ASTNode):
-    def __init__(self, identifier, value):
+    def __init__(self, identifier, value, glob= False):
         self.identifier = identifier
         self.value = value
+        self.glob = glob
 
 class PrintNode(ASTNode):
     def __init__(self, expression):
@@ -104,9 +106,10 @@ class Parser:
                     self.advance()  # Skip any unexpected tokens
         return statements
 
-    def parse_tillBreak(self):
+    def parse_block(self):
+        self.advance()
         statements = []
-        while self.current_token[0] != "BREAK":
+        while self.current_token[0] != "ENDBLOCK":
             match self.current_token[0]:
                 case "PRINT":
                     statements.append(self.parse_print())
@@ -128,12 +131,12 @@ class Parser:
         els = None
         self.advance()
         condition = self.parse_condition()
-        body = self.parse_tillBreak()
+        body = self.parse_block()
         if self.current_token[0] == "ELSEIF": 
             elseif = self.parse_if()
         elif self.current_token[0] == "ELSE":
             self.advance()
-            els = self.parse_tillBreak()
+            els = self.parse_block()
             print(els)
         return IfNode(condition, body, elseif, els)
         
@@ -148,7 +151,7 @@ class Parser:
             var = iterable
             self.advance()
             iterable = self.parse_expression()
-        body = self.parse_tillBreak()
+        body = self.parse_block()
 
         return ForNode(var, iterable, body)
 
@@ -203,7 +206,7 @@ class Parser:
         elif self.current_token[0] in ["IDENTIFIER", "NUMBER", "BOOLEAN", "STRING"]:
             left = self.create_default(self.current_token[1], self.current_token[0])
             self.advance()
-        elif self.current_token[0] == "BREAK":
+        elif self.current_token[0] == "ENDBLOCK":
             self.advance()
             return left
         else:

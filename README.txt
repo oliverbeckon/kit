@@ -1,3 +1,4 @@
+
 Kit Syntax:
     variable assignment statement is like this
         x = 3
@@ -15,12 +16,23 @@ Kit Syntax:
      
 
     Comparisons
-        x == 3 == x is 3?
-        x != 3 == x is not 3?
-        x > 3 == x greater then 3?
-        x < 3 == x less then 3?
-        x >= 3 == x greater then or equal to 3
-        x <= 3 == x less then or equal to 3
+        x == b
+            returns true if x equals b 
+
+        x != b
+            returns true if x doesnt equal b
+
+        x > b
+            returns true if x is greater then b
+
+        x < b 
+            returns true if x is less then b
+
+        x >= b 
+            returns true if x is greater then or equal to b
+
+        x <= b
+            return true if x is less then or equal to b
 
     print
         say(x) 
@@ -30,12 +42,42 @@ Kit Syntax:
         this will
     
     Structures
-        for x (for loop with no var)
-        for i +=: x (for loop with var)
-        while booleanExpression 
-        ? booleanExpression == if statement
-        else? booleanExpression == else if statement
-        else 
-        ; (break / end loops, if statements, while loops, else statements, else if statements)
+        for x {body} 
+            executes body x times inclusively
 
 
+        for i ++: x {body} 
+            executes body x times inclusively while incrementing i by 1 starting as 1 each time
+
+
+        while booleanExpression {body} 
+            executes body repeatedly until booleanExpression returns false
+
+
+        ? booleanExpression {body} 
+            executes body if booleanExpression returns True
+        
+
+        else? booleanExpression {body}
+            executes body if previous ? or else? statements booleanExpressions returns false and booleanExpression returns True
+        
+        else {body}
+            executes body if all previous ? or else? statements booleanExpressions return false
+         
+
+
+Examples:
+    basic FizzBuzz
+
+        for i ++: 100 {
+            z = i % 5 + i % 3
+            ? z == 0 {
+                say("FizzBuzz")
+            } else? i % 5 == 0 {
+                say("Buzz")
+            } else? i % 3 == 0 {
+                say("Fizz")
+            } else {
+                say(i) 
+            }
+        }

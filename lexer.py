@@ -5,8 +5,12 @@ TOKEN_TYPES = [
     ("STRING", r'"([^"\\]|\\.)*"|\'([^\'\\]|\\.)*\''),
     ("BOOLEAN", r"\b(True|False)\b"),
 
-    ("PLUSEQUALTILL", r"\+\+:"),
 
+    ("STARTBLOCK", r"{"),
+    ("ENDBLOCK", r"}"),
+
+
+    ("PLUSEQUALTILL", r"\+\+:"),
     ("PLUSEQUAL", r"\+="),
     ("MINUSEQUAL", r"-="),
     ("TIMESEQUAL", r"\*="),
