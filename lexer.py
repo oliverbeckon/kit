@@ -3,6 +3,26 @@ import re
 TOKEN_TYPES = [
     ("NUMBER", r"\d+"),
     ("STRING", r'"([^"\\]|\\.)*"|\'([^\'\\]|\\.)*\''),
+    ("BOOLEAN", r"\b(True|False)\b"),
+
+
+    ("PLUSEQUAL", r"\+:"),
+    ("MINUSEQUAL", r"-:"),
+    ("TIMESEQUAL", r"\*:"),
+    ("DIVIDEEQUAL", r"/:"),
+    ("POWEREQUAL", r"\*\*:"),
+    ("SQAUREROOTEQUAL", r"//:"),
+    ("MODULASEQUAL", r"%:"),
+
+    ("ISEQUAL", r"::"),
+    ("NOTEQUAL", r"!:"),
+    ("GREATER", r">"),
+    ("LESS", r"<"),
+    ("GREATEREQUAL", r">:"),
+    ("LESSEQUAL", r"<:"),
+
+
+
     ("PLUS", r"\+"),
     ("MINUS", r"-"),
     ("TIMES", r"\*"),
@@ -11,16 +31,14 @@ TOKEN_TYPES = [
     ("SQUAREROOT", r"//"),
     ("MODULAS", r"%"),
     ("EQUALS", r":"),
-    ("PLUSEQUAL", r"\+:"),
-    ("MINUSEQUAL", r"-:"),
-    ("TIMESEQUAL", r"\*:"),
-    ("DIVIDEEQUAL", r"/:"),
-    ("POWEREQUAL", r"\*\*:"),
-    ("SQAUREROOTEQUAL", r"//:"),
-    ("MODULASEQUAL", r"%:"),
+
+    
+
+
     ("PRINT", r"say"),
     ("FOR", r"for"),
-    ("FOREND", r";"),
+    ("PLUSEQUALTILL", r"\+::"),
+    ("BREAK", r";"),
     ("WHILE", r"while"),
     ("IF", r"\?"),
     ("IFELSE", r"else?"),
@@ -47,12 +65,10 @@ class Lexer:
         position = 0
         while position < len(self.source_code):
             match = None
-            print(f"position {position}, Character: {self.source_code[position]}")
             for token_type, regex in TOKEN_TYPES:
                 regex_match = re.match(regex, self.source_code[position:])
                 if regex_match:
                     match = regex_match.group(0)
-                    print(token_type)
                     if token_type == "SKIP" or token_type == "COMMENT" or token_type == "NEWLINE":
                         # Skip whitespace and comments (do not add them to tokens)
                         pass

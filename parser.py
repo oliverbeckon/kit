@@ -8,6 +8,17 @@ class ForNode(ASTNode):
         self.iterable = iterable
         self.body = body
 
+class IfNode(ASTNode):
+    def __init__(self, expression, body):
+        self.expression = expression
+        self.body = body
+
+class WhileNode(ASTNode):
+    def __init__(self, expression, body):
+        self.expression = expression
+        self.body = body
+
+
 class NumberNode(ASTNode):
     def __init__(self, value):
         self.value = int(value)
@@ -15,6 +26,12 @@ class NumberNode(ASTNode):
 class StringNode(ASTNode):
     def __init__(self, value):
         self.value = str(value)
+
+class BooleanNode(ASTNode):
+    def __init__(self, value):
+        self.value = bool(value)
+        
+
 
 class BinOpNode(ASTNode):
     def __init__(self, left, op, right):
@@ -35,9 +52,17 @@ class VariableNode(ASTNode):
     def __init__(self, identifier):
         self.identifier = identifier
         
+class StrOpNode(ASTNode):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
-
-
+class BoolOpNode(ASTNode):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
 
 class Parser:
@@ -70,9 +95,37 @@ class Parser:
                 statements.append(self.parse_assignment())
             elif self.current_token[0] == "FOR":
                 statements.append(self.parse_loop())
+            elif self.current_token[0] == "IF":
+                statements.append(self.parse_if())
             else:
                 self.advance()  # Skip any unexpected tokens
         return statements
+
+    def parse_tillBreak(self):
+        statements = []
+        while self.current_token[0] != "BREAK":
+            if self.current_token[0] == "PRINT":
+                self.advance()
+                statements.append(self.parse_print())
+            elif self.current_token[0] == "IDENTIFIER":
+                statements.append(self.parse_assignment())
+            elif self.current_token[0] == "FOR":
+                statements.append(self.parse_loop())
+            elif self.current_token[0] == "IF":
+                statements.append(self.parse_if())
+            else:
+                self.advance()  # Skip any unexpected tokens
+        return statements
+
+
+
+    def parse_if(self):
+        self.advance()
+        expression = self.parse_expression()
+
+        body = self.parse_tillBreak()
+        return IfNode(expression, body)
+        
 
 
     def parse_loop(self):
@@ -82,17 +135,7 @@ class Parser:
         elif self.current_token[0] == "NUMBER":
             iterable = NumberNode(self.current_token[1])
         
-        body = []
-        while self.current_token[0] != "FOREND":
-            if self.current_token[0] == "PRINT":
-                self.advance()
-                body.append(self.parse_print())
-            elif self.current_token[0] == "IDENTIFIER":
-                body.append(self.parse_assignment())
-            elif self.current_token[0] == "FOR":
-                body.append(self.parse_loop())
-            else:
-                self.advance()  # Skip any unexpected tokens
+        body = self.parse_tillBreak()
         
         return ForNode(None, iterable, body)
 
@@ -111,7 +154,6 @@ class Parser:
              raise SyntaxError("Expected '(' after say")
         self.advance()
         expr = self.parse_parentheses()
-        print(f"Expr: {expr}")
         return PrintNode(expr)
     
     def parse_parentheses(self):
@@ -123,17 +165,22 @@ class Parser:
                     self.advance()
                 else:
                     raise SystemError(f"Unexpected token in parentheses: {self.current_token[0]}")
-            if self.current_token[0] == "IDENTIFIER":
+            elif self.current_token[0] == "IDENTIFIER":
                 if left == None:
                     left = VariableNode(self.current_token[1])
                     self.advance()
                 else:
-                    print(left)
+                    raise SyntaxError(f"Unexpected token in parentheses: {self.current_token[0]}")
+            elif self.current_token[0] == "BOOLEAN":
+                if left == None:
+                    left = BooleanNode(self.current_token[1])
+                    self.advance()
+                else:
                     raise SyntaxError(f"Unexpected token in parentheses: {self.current_token[0]}")
             elif self.current_token[0] in ["DIVIDE", "TIMES", "POWER", "SQUAREROOT"]:
                 op = self.current_token[1]
                 self.advance()
-                right = self.parse_factor()
+                right = self.parse_expression()
                 self.advance()
                 left = BinOpNode(left, op, right)
             elif self.current_token[0] in ["PLUS", "MINUS"]:
@@ -142,12 +189,15 @@ class Parser:
                 right = self.parse_expression()
                 left = BinOpNode(left, op, right)
 
-        print(f"parentheses expr: {left}")
+
         return left
     
-    def parse_expression(self) -> BinOpNode | VariableNode | NumberNode | StringNode | None:
+    def parse_expression(self) -> BinOpNode | VariableNode | NumberNode | StringNode | BooleanNode | None:
         left = None
-        if self.current_token[0] == "IDENTIFIER":
+        if self.current_token[0] == "LEFTPAREN":
+            left = self.parse_parentheses()
+            self.advance()
+        elif self.current_token[0] == "IDENTIFIER":
             left = VariableNode(self.current_token[1])
             self.advance()
         elif self.current_token[0] == "NUMBER":
@@ -155,16 +205,29 @@ class Parser:
             self.advance()
         elif self.current_token[0] == "STRING":
             left = StringNode(self.current_token[1])
-            self.advance
+            self.advance()
+        elif self.current_token[0] == "BOOLEAN":
+            left = BooleanNode(self.current_token[1])
+            self.advance()
         else:
-            raise SyntaxError(f"Unexpected token in say function: {self.current_token[0]}")
+            raise SyntaxError(f"Unexpected token: {self.current_token[0]}")
         
-        if self.current_token[0] in ["PLUS", "MINUS", "DIVIDE", "TIMES", "POWER", "SQUAREROOT"]:
+
+        if isinstance(left, StringNode) and self.current_token[0] in ["PLUS", "TIMES"]:
+            op = self.current_token[1]
+            self.advance()
+            right = self.parse_expression()
+            left = StrOpNode(left, op, right)
+        elif self.current_token[0] in ["PLUS", "MINUS", "DIVIDE", "TIMES", "POWER", "SQUAREROOT"]:
             op = self.current_token[1]
             self.advance()
             right = self.parse_expression()
             left = BinOpNode(left, op, right)
-
+        elif self.current_token[0] in ["ISEQUAL", "NOTEQUAL", "GREATER", "LESS", "GREATEREQUAL", "LESSEQUAL"]:
+            op = self.current_token[1]
+            self.advance()
+            right = self.parse_expression()
+            left = BoolOpNode(left, op, right)
         
         return left
     
