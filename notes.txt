@@ -1,8 +1,9 @@
 Syntax:
     variable assignment statement is like this
         x : 3
-        y: 5
-        z:2
+        y : "String"
+        
+
 
     Expressions
         2 + 3: 5
@@ -28,5 +29,9 @@ Syntax:
         #none of this will be interpreted
         this will
     
-    
+    Structures
+        for x (for loop with no var)
+        for i +:: x (for loop with var)
+        ; (break / end loops)
+
 

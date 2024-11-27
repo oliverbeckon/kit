@@ -8,10 +8,13 @@ class ForNode(ASTNode):
         self.iterable = iterable
         self.body = body
 
-
 class NumberNode(ASTNode):
     def __init__(self, value):
         self.value = int(value)
+
+class StringNode(ASTNode):
+    def __init__(self, value):
+        self.value = str(value)
 
 class BinOpNode(ASTNode):
     def __init__(self, left, op, right):
@@ -114,6 +117,12 @@ class Parser:
     def parse_parentheses(self):
         left = None
         while self.current_token[0] != "RIGHTPAREN":
+            if self.current_token[0] == "STRING":
+                if left == None:
+                    left = StringNode(self.current_token[1])
+                    self.advance()
+                else:
+                    raise SystemError(f"Unexpected token in parentheses: {self.current_token[0]}")
             if self.current_token[0] == "IDENTIFIER":
                 if left == None:
                     left = VariableNode(self.current_token[1])
@@ -136,7 +145,7 @@ class Parser:
         print(f"parentheses expr: {left}")
         return left
     
-    def parse_expression(self) -> BinOpNode | VariableNode | NumberNode | None:
+    def parse_expression(self) -> BinOpNode | VariableNode | NumberNode | StringNode | None:
         left = None
         if self.current_token[0] == "IDENTIFIER":
             left = VariableNode(self.current_token[1])
@@ -144,6 +153,9 @@ class Parser:
         elif self.current_token[0] == "NUMBER":
             left = NumberNode(self.current_token[1])
             self.advance()
+        elif self.current_token[0] == "STRING":
+            left = StringNode(self.current_token[1])
+            self.advance
         else:
             raise SyntaxError(f"Unexpected token in say function: {self.current_token[0]}")
         

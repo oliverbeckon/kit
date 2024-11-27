@@ -16,6 +16,8 @@ class Interpreter:
                     self.interpret(node.body)
 
     def evaluate(self, node):
+        if isinstance(node, StringNode):
+            return node.value
         if isinstance(node, NumberNode):
             return node.value
         elif isinstance(node, BinOpNode):

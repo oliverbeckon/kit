@@ -3,10 +3,9 @@ import interpreter
 import parser
 # Create a lexer with the source code
 source_code = """
-x : 1
+x : "test"
 for 5
-x : x + 1;
-say(x)
+say(x);
 """
 
 # Step 1: Tokenize the source code

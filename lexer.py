@@ -2,6 +2,7 @@ import re
 
 TOKEN_TYPES = [
     ("NUMBER", r"\d+"),
+    ("STRING", r'"([^"\\]|\\.)*"|\'([^\'\\]|\\.)*\''),
     ("PLUS", r"\+"),
     ("MINUS", r"-"),
     ("TIMES", r"\*"),
