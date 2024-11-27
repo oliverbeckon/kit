@@ -5,21 +5,22 @@ TOKEN_TYPES = [
     ("STRING", r'"([^"\\]|\\.)*"|\'([^\'\\]|\\.)*\''),
     ("BOOLEAN", r"\b(True|False)\b"),
 
+    ("PLUSEQUALTILL", r"\+\+:"),
 
-    ("PLUSEQUAL", r"\+:"),
-    ("MINUSEQUAL", r"-:"),
-    ("TIMESEQUAL", r"\*:"),
-    ("DIVIDEEQUAL", r"/:"),
-    ("POWEREQUAL", r"\*\*:"),
-    ("SQAUREROOTEQUAL", r"//:"),
-    ("MODULASEQUAL", r"%:"),
+    ("PLUSEQUAL", r"\+="),
+    ("MINUSEQUAL", r"-="),
+    ("TIMESEQUAL", r"\*="),
+    ("DIVIDEEQUAL", r"/="),
+    ("POWEREQUAL", r"\*\*="),
+    ("SQAUREROOTEQUAL", r"//="),
+    ("MODULASEQUAL", r"%="),
 
-    ("ISEQUAL", r"::"),
-    ("NOTEQUAL", r"!:"),
+    ("ISEQUAL", r"=="),
+    ("NOTEQUAL", r"!="),
     ("GREATER", r">"),
     ("LESS", r"<"),
-    ("GREATEREQUAL", r">:"),
-    ("LESSEQUAL", r"<:"),
+    ("GREATEREQUAL", r">="),
+    ("LESSEQUAL", r"<="),
 
 
 
@@ -30,18 +31,17 @@ TOKEN_TYPES = [
     ("POWER", r"\*\*"),
     ("SQUAREROOT", r"//"),
     ("MODULAS", r"%"),
-    ("EQUALS", r":"),
+    ("EQUALS", r"="),
 
     
 
 
     ("PRINT", r"say"),
     ("FOR", r"for"),
-    ("PLUSEQUALTILL", r"\+::"),
     ("BREAK", r";"),
     ("WHILE", r"while"),
     ("IF", r"\?"),
-    ("IFELSE", r"else?"),
+    ("ELSEIF", r"else\?"),
     ("ELSE", r"else"),
     ("IDENTIFIER", r"[a-zA-Z_][a-zA-Z_0-9]*"),
     ("LEFTPAREN", r"\("),

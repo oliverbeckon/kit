@@ -1,8 +1,8 @@
 Kit Syntax:
     variable assignment statement is like this
-        x : 3
-        y : "String"
-        z : True
+        x = 3
+        y = "String"
+        z = True
 
     Expressions
         a + b == a plus b
@@ -15,12 +15,12 @@ Kit Syntax:
      
 
     Comparisons
-        x :: 3 == x is 3?
-        x !: 3 == x is not 3?
+        x == 3 == x is 3?
+        x != 3 == x is not 3?
         x > 3 == x greater then 3?
         x < 3 == x less then 3?
-        x >: 3 == x greater then or equal to 3
-        x <: 3 == x less then or equal to 3
+        x >= 3 == x greater then or equal to 3
+        x <= 3 == x less then or equal to 3
 
     print
         say(x) 
@@ -31,7 +31,7 @@ Kit Syntax:
     
     Structures
         for x (for loop with no var)
-        for i +:: x (for loop with var)
+        for i +=: x (for loop with var)
         while booleanExpression 
         ? booleanExpression == if statement
         else? booleanExpression == else if statement
