@@ -2,7 +2,7 @@ class ASTNode:
     pass
 
 
-class ForLoop(ASTNode):
+class ForNode(ASTNode):
     def __init__(self, loopvar, iterable, body):
         self.loopvar = loopvar
         self.iterable = iterable
@@ -73,7 +73,25 @@ class Parser:
 
 
     def parse_loop(self):
-        pass
+        self.advance()
+        if self.current_token[0] == "IDENTIFIER":
+            iterable = VariableNode(self.current_token[1])
+        elif self.current_token[0] == "NUMBER":
+            iterable = NumberNode(self.current_token[1])
+        
+        body = []
+        while self.current_token[0] != "FOREND":
+            if self.current_token[0] == "PRINT":
+                self.advance()
+                body.append(self.parse_print())
+            elif self.current_token[0] == "IDENTIFIER":
+                body.append(self.parse_assignment())
+            elif self.current_token[0] == "FOR":
+                body.append(self.parse_loop())
+            else:
+                self.advance()  # Skip any unexpected tokens
+        
+        return ForNode(None, iterable, body)
 
 
 

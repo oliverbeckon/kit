@@ -1,8 +1,4 @@
-from parser import AssignNode
-from parser import PrintNode
-from parser import NumberNode
-from parser import BinOpNode
-from parser import VariableNode
+from parser import *
 
 class Interpreter:
     def __init__(self):
@@ -14,6 +10,10 @@ class Interpreter:
                 self.variables[node.identifier] = self.evaluate(node.value)
             elif isinstance(node, PrintNode):
                 print(self.evaluate(node.expression))
+            elif isinstance(node, ForNode):
+                iterable = range(int(node.iterable.value))
+                for x in iterable:
+                    self.interpret(node.body)
 
     def evaluate(self, node):
         if isinstance(node, NumberNode):

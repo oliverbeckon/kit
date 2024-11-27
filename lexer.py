@@ -19,6 +19,7 @@ TOKEN_TYPES = [
     ("MODULASEQUAL", r"%:"),
     ("PRINT", r"say"),
     ("FOR", r"for"),
+    ("FOREND", r";"),
     ("WHILE", r"while"),
     ("IF", r"\?"),
     ("IFELSE", r"else?"),
