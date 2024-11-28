@@ -9,6 +9,9 @@ TOKEN_TYPES = [
     ("STARTBLOCK", r"{"),
     ("ENDBLOCK", r"}"),
 
+    ("OR", r"or"),
+    ("AND", r"and"),
+    ("NOT", r"not"),
 
     ("PLUSEQUALTILL", r"\+\+:"),
     ("PLUSEQUAL", r"\+="),
@@ -44,8 +47,7 @@ TOKEN_TYPES = [
     ("FOR", r"for"),
     ("BREAK", r";"),
     ("WHILE", r"while"),
-    ("IF", r"\?"),
-    ("ELSEIF", r"else\?"),
+    ("IF", r"if"),
     ("ELSE", r"else"),
     ("IDENTIFIER", r"[a-zA-Z_][a-zA-Z_0-9]*"),
     ("LEFTPAREN", r"\("),

@@ -3,21 +3,15 @@ import interpreter
 import parser
 # Create a lexer with the source code
 source_code = """
-? True {
-    say('test')
+
+x = 10
+y = 20
+
+if x > 3 and y > 21 or y == 21 {
+    say("yippie")
 }
-for i ++: 100 {
-    z = i % 5 + i % 3
-    ? z == 0 {
-        say("FizzBuzz")
-    } else? i % 5 == 0 {
-        say("Buzz")
-    } else? i % 3 == 0 {
-        say("Fizz")
-    } else {
-        say(i) 
-    }
-}
+
+
 """
 
 # Step 1: Tokenize the source code

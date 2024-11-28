@@ -34,6 +34,12 @@ Kit Syntax:
         x <= b
             return true if x is less then or equal to b
 
+        comparison and comparison
+            return true if both comparisons return true
+
+        comparison or comparison
+            return true if one of the comparisons return true
+
     print
         say(x) 
 
@@ -61,6 +67,7 @@ Kit Syntax:
         else? booleanExpression {body}
             executes body if previous ? or else? statements booleanExpressions returns false and booleanExpression returns True
         
+
         else {body}
             executes body if all previous ? or else? statements booleanExpressions return false
          
@@ -70,8 +77,7 @@ Examples:
     basic FizzBuzz
 
         for i ++: 100 {
-            z = i % 5 + i % 3
-            ? z == 0 {
+            ? i % 5 == 0 and i % 3 == 0 {
                 say("FizzBuzz")
             } else? i % 5 == 0 {
                 say("Buzz")

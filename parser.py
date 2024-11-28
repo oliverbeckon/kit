@@ -132,12 +132,13 @@ class Parser:
         self.advance()
         condition = self.parse_condition()
         body = self.parse_block()
-        if self.current_token[0] == "ELSEIF": 
-            elseif = self.parse_if()
-        elif self.current_token[0] == "ELSE":
-            self.advance()
-            els = self.parse_block()
-            print(els)
+        if self.current_token != None:
+            if self.current_token[0] == "ELSE": 
+                self.advance()
+                if self.current_token[0] == "IF":
+                    elseif = self.parse_if()
+                elif self.current_token[0] == "STARTBLOCK":
+                    els = self.parse_block()
         return IfNode(condition, body, elseif, els)
         
 
@@ -228,6 +229,12 @@ class Parser:
             op = self.current_token[1]
             self.advance()
             right = self.parse_expression()
+            left = BinOpNode(left, op, right)
+
+        if self.current_token[0] in ["OR", "AND"]:
+            op = self.current_token[1]
+            self.advance()
+            right = self.parse_condition()
             left = BinOpNode(left, op, right)
 
         return left
