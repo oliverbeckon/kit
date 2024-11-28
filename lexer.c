@@ -107,6 +107,8 @@ Token get_next_token(const char **input) {
     return token;
 }
 
+  
+
 // Main lexer loop
 void lex(const char *input) {
     Token token;
@@ -140,8 +142,4 @@ void lex(const char *input) {
     }
 }
 
-int main() {
-    const char *input = "if (x + 3) return y;";
-    lex(input);
-    return 0;
-}
+
