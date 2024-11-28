@@ -60,17 +60,28 @@ Kit Syntax:
             executes body repeatedly until booleanExpression returns false
 
 
-        ? booleanExpression {body} 
+        if booleanExpression {body} 
             executes body if booleanExpression returns True
         
 
-        else? booleanExpression {body}
-            executes body if previous ? or else? statements booleanExpressions returns false and booleanExpression returns True
+        else if booleanExpression {body}
+            executes body if previous if or else if statements booleanExpressions returns false and booleanExpression returns True
         
 
         else {body}
-            executes body if all previous ? or else? statements booleanExpressions return false
+            executes body if all previous if or else if statements booleanExpressions return false
+
+
+    Functions
+        funcname = f(arg1, arg2) {body}
+            creates function with the name 'funcname' that when called using funcname(arg1, arg2) will execute body 
+        
+        return x
+            used in a function to return a variable x
+        
          
+
+
 
 
 Examples:
@@ -87,3 +98,6 @@ Examples:
                 say(i) 
             }
         }
+
+
+
