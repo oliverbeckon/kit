@@ -1,0 +1,4 @@
+PUSH 6
+PUSH 3
+SUB 
+RET

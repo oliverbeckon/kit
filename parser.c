@@ -84,20 +84,4 @@ ASTNode *parse_statement(Parser *parser) {
     return node;
 }
 
-int main() {
-    const char *input = "return x + 3;";
-    
-    // Initialize lexer and parser
 
-    Parser *parser = init_parser(input);
-    
-    // Parse a statement (for now, we just handle simple "return" statements)
-    ASTNode *ast = parse_statement(parser);
-
-    // Output the AST node type (just for testing)
-    if (ast) {
-        printf("parsed node");
-    }
-    
-    return 0;
-}
