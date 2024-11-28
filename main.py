@@ -4,16 +4,17 @@ import parser
 # Create a lexer with the source code
 source_code = """
 
-x = 234346456473453645674561933338
-
-
-for i ++: 10 {
-    say(x ** i)
+for i ++: 100 {
+    if i % 5 == 0 and i % 3 == 0 {
+        say("FizzBuzz")
+    } else if i % 5 == 0 {
+        say("Buzz")
+    } else if i % 3 == 0 {
+        say("Fizz")
+    } else {
+        say(i) 
+    }
 }
-
-
-
-
 
 
 """

@@ -88,11 +88,11 @@ Examples:
     basic FizzBuzz
 
         for i ++: 100 {
-            ? i % 5 == 0 and i % 3 == 0 {
+            if i % 5 == 0 and i % 3 == 0 {
                 say("FizzBuzz")
-            } else? i % 5 == 0 {
+            } else if i % 5 == 0 {
                 say("Buzz")
-            } else? i % 3 == 0 {
+            } else if i % 3 == 0 {
                 say("Fizz")
             } else {
                 say(i) 
