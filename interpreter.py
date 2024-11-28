@@ -9,16 +9,15 @@ class Interpreter:
         for node in ast:
             if isinstance(node, AssignNode):
                 self.scopeVariables[node.identifier] = self.evaluate(node.value)
-
             elif isinstance(node, PrintNode):
                 print(self.evaluate(node.expression))
 
             elif isinstance(node, ForNode):
                 #print(node.body[0].expression.right)
-                self.variables[node.loopvar.identifier] = 0
+                self.scopeVariables[node.loopvar.identifier] = 0
                 iterable = range(int(node.iterable.value))
                 for node.loopvar.value in iterable:
-                    self.variables[node.loopvar.identifier] += 1
+                    self.scopeVariables[node.loopvar.identifier] += 1
                     self.interpret(node.body)
 
             elif isinstance(node, IfNode):

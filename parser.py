@@ -157,7 +157,7 @@ class Parser:
         self.advance()
         iterable = self.create_default(self.current_token[1], self.current_token[0])
         self.advance()
-        if self.current_token[0] == "PLUSEQUALTILL":
+        if self.current_token[0] == "PLUSPLUSTILL":
             var = iterable
             self.advance()
             iterable = self.parse_expression()
@@ -168,11 +168,15 @@ class Parser:
 
 
     def parse_assignment(self):
-        name = self.current_token[1]
+        identifier = self.current_token[1]
         self.advance()
-        self.advance()
-        value = self.parse_expression()
-        return AssignNode(name, value)
+        if self.current_token[0] != "EQUALS":
+            value = self.parse_expression(VariableNode(identifier))
+        else:
+            self.advance()
+            value = self.parse_expression()
+
+        return AssignNode(identifier, value)
 
 
     def parse_print(self):
@@ -181,54 +185,54 @@ class Parser:
         if self.current_token[0] != "LEFTPAREN":
              raise SyntaxError("Expected '(' after say")
         self.advance()
-        expr = self.parse_parentheses()
+        expr = self.parse_expression()
+        self.advance()
         return PrintNode(expr)
     
-
-    def parse_parentheses(self):
-        left = None
-        while self.current_token[0] != "RIGHTPAREN":
-            if self.current_token[0] in ["STRING", "IDENTIFIER", "BOOLEAN"]:
-                if left == None:
-                    left = self.create_default(self.current_token[1], self.current_token[0])
-                    self.advance()
-                else:
-                    raise SystemError(f"Unexpected token in parentheses: {self.current_token[0]}")
-            elif self.current_token[0] in ["DIVIDE", "TIMES", "POWER", "SQUAREROOT", "MODULAS"]:
-                op = self.current_token[1]
-                self.advance()
-                right = self.parse_expression()
-                left = BinOpNode(left, op, right)
-            elif self.current_token[0] in ["PLUS", "MINUS"]:
-                op = self.current_token[1]
-                self.advance()
-                right = self.parse_expression()
-                left = BinOpNode(left, op, right)
-
-
-        return left
     
-    def parse_expression(self) -> BinOpNode | VariableNode | NumberNode | StringNode | BooleanNode | None:
-        left = None
+    def parse_expression(self, left = None) -> BinOpNode | VariableNode | NumberNode | StringNode | BooleanNode | None:
         if self.current_token[0] == "LEFTPAREN":
-            left = self.parse_parentheses()
+            self.advance()
+            left = self.parse_expression()
             self.advance()
         elif self.current_token[0] in ["IDENTIFIER", "NUMBER", "BOOLEAN", "STRING"]:
             left = self.create_default(self.current_token[1], self.current_token[0])
             self.advance()
         elif self.current_token[0] == "ENDBLOCK":
             self.advance()
-            return left
+            return 
+        elif self.current_token[0] in ["PLUS", "MINUS", "DIVIDE", "TIMES", "POWER", "SQUAREROOT", "MODULAS"]:
+            op = self.current_token[1]
+            self.advance()
+            if self.current_token[0] == "EQUALS":
+                self.advance()
+                right = self.parse_expression()
+                left = BinOpNode(left, op, right)
+                return left
+            else:
+                raise SyntaxError(f"Unexpected token: {self.current_token[0]}")
         else:
             raise SyntaxError(f"Unexpected token: {self.current_token[0]}")
         
+        if self.current_token[0] == "EQUALS":
+            self.advance()
+            value = self.parse_expression()
+            return AssignNode(left, value)
+
+
 
         if self.current_token[0] in ["PLUS", "MINUS", "DIVIDE", "TIMES", "POWER", "SQUAREROOT", "MODULAS"]:
             op = self.current_token[1]
             self.advance()
-            right = self.parse_expression()
-            left = BinOpNode(left, op, right)
-           
+            if self.current_token[0] == "EQUALS":
+                self.advance()
+                right = self.parse_expression()
+                newleft = BinOpNode(left, op, right)
+                left =  AssignNode(left, newleft)
+            else:
+                right = self.parse_expression()
+                left = BinOpNode(left, op, right)
+
         return left
     
     

@@ -4,12 +4,13 @@ import parser
 # Create a lexer with the source code
 source_code = """
 
-x = 10
+x = 234346456473453645674561933338
 
-while x > 2 {
-    say(x)
-    x = x - 1
+
+for i ++: 10 {
+    say(x ** i)
 }
+
 
 
 
@@ -20,7 +21,7 @@ while x > 2 {
 # Step 1: Tokenize the source code
 Mylexer = lexer.Lexer(source_code)
 tokens = Mylexer.get_tokens()
-
+print(tokens)
 
 # Step 2: Parse the tokens into an AST
 Myparser = parser.Parser(tokens)

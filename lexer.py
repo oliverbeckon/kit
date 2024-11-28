@@ -13,14 +13,8 @@ TOKEN_TYPES = [
     ("AND", r"and"),
     ("NOT", r"not"),
 
-    ("PLUSEQUALTILL", r"\+\+:"),
-    ("PLUSEQUAL", r"\+="),
-    ("MINUSEQUAL", r"-="),
-    ("TIMESEQUAL", r"\*="),
-    ("DIVIDEEQUAL", r"/="),
-    ("POWEREQUAL", r"\*\*="),
-    ("SQAUREROOTEQUAL", r"//="),
-    ("MODULASEQUAL", r"%="),
+    ("PLUSPLUSTILL", r"\+\+:"),
+
 
     ("ISEQUAL", r"=="),
     ("NOTEQUAL", r"!="),
@@ -30,13 +24,12 @@ TOKEN_TYPES = [
     ("LESSEQUAL", r"<="),
 
 
-
+    ("POWER", r"\*\*"),
+     ("SQUAREROOT", r"//"),
     ("PLUS", r"\+"),
     ("MINUS", r"-"),
     ("TIMES", r"\*"),
     ("DIVIDE", r"/"),
-    ("POWER", r"\*\*"),
-    ("SQUAREROOT", r"//"),
     ("MODULAS", r"%"),
     ("EQUALS", r"="),
 
