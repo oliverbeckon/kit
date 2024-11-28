@@ -5,11 +5,14 @@ import parser
 source_code = """
 
 x = 10
-y = 20
 
-if x > 3 and y > 21 or y == 21 {
-    say("yippie")
+while x > 2 {
+    say(x)
+    x = x - 1
 }
+
+
+
 
 
 """
@@ -17,7 +20,7 @@ if x > 3 and y > 21 or y == 21 {
 # Step 1: Tokenize the source code
 Mylexer = lexer.Lexer(source_code)
 tokens = Mylexer.get_tokens()
-print(tokens)
+
 
 # Step 2: Parse the tokens into an AST
 Myparser = parser.Parser(tokens)

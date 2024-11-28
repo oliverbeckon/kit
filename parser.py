@@ -102,6 +102,8 @@ class Parser:
                     statements.append(self.parse_loop())
                 case "IF":
                     statements.append(self.parse_if())
+                case "WHILE":
+                    statements.append(self.parse_while())
                 case _:
                     self.advance()  # Skip any unexpected tokens
         return statements
@@ -123,6 +125,13 @@ class Parser:
                     self.advance()  # Skip any unexpected 
         self.advance()
         return statements
+
+
+    def parse_while(self):
+        self.advance()
+        condition = self.parse_condition()
+        body = self.parse_block()
+        return WhileNode(condition, body)
 
 
 

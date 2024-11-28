@@ -29,6 +29,11 @@ class Interpreter:
                 elif node.els != None:
                     self.interpret(node.els)
 
+            elif isinstance(node, WhileNode):
+
+                while self.evaluate(node.expression) == True:
+                    self.interpret(node.body)
+
 
     def evaluate(self, node):
         if isinstance(node, BooleanNode):
