@@ -4,25 +4,18 @@ import parser
 # Create a lexer with the source code
 source_code = """
 
-for i ++: 100 {
-    if i % 5 == 0 and i % 3 == 0 {
-        say("FizzBuzz")
-    } else if i % 5 == 0 {
-        say("Buzz")
-    } else if i % 3 == 0 {
-        say("Fizz")
-    } else {
-        say(i) 
-    }
+func test() {
+    say("i just called a function")
 }
 
+test()
 
 """
 
 # Step 1: Tokenize the source code
 Mylexer = lexer.Lexer(source_code)
 tokens = Mylexer.get_tokens()
-print(tokens)
+#print(tokens)
 
 # Step 2: Parse the tokens into an AST
 Myparser = parser.Parser(tokens)

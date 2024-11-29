@@ -15,6 +15,9 @@ TOKEN_TYPES = [
 
     ("PLUSPLUSTILL", r"\+\+:"),
 
+    ("FUNCTION", r"func"),
+    ("RETURN", r"rtrn"),
+    ("COMMA", ","),
 
     ("ISEQUAL", r"=="),
     ("NOTEQUAL", r"!="),

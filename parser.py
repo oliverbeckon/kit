@@ -21,6 +21,27 @@ class WhileNode(ASTNode):
         self.body = body
 
 
+
+
+class FunctionNode(ASTNode):
+    def __init__(self, identifier, body, args = None) -> None:
+        self.identifier = identifier
+        self.args = args
+        self.body = body
+
+class FunctionCallNode(ASTNode):
+    def __init__(self, identifier, args = None) -> None:
+        self.identifier = identifier
+        self.args = args
+
+class ReturnNode(ASTNode):
+    def __init__(self, value) -> None:
+        self.value = value
+
+
+
+
+
 class NumberNode(ASTNode):
     def __init__(self, value):
         self.value = int(value)
@@ -104,6 +125,8 @@ class Parser:
                     statements.append(self.parse_if())
                 case "WHILE":
                     statements.append(self.parse_while())
+                case "FUNCTION":
+                    statements.append(self.parse_func())
                 case _:
                     self.advance()  # Skip any unexpected tokens
         return statements
@@ -121,10 +144,23 @@ class Parser:
                     statements.append(self.parse_loop())
                 case "IF":
                     statements.append(self.parse_if())
+                case "RETURN":
+                    self.advance()
+                    statements.append(self.parse_expression())
                 case _:
                     self.advance()  # Skip any unexpected 
         self.advance()
         return statements
+
+
+    def parse_func(self):
+        self.advance()
+        identifier = self.parse_String() # Get Name of func
+        args = self.parse_args()
+        self.advance()
+        body = self.parse_block()
+        return FunctionNode(identifier, body, args)
+
 
 
     def parse_while(self):
@@ -170,7 +206,10 @@ class Parser:
     def parse_assignment(self):
         identifier = self.current_token[1]
         self.advance()
-        if self.current_token[0] != "EQUALS":
+        if self.current_token[0] == "LEFTPAREN":
+            args = self.parse
+            return FunctionCallNode(identifier, args)
+        elif self.current_token[0] in ["PLUS", "MINUS", "TIMES"]:
             value = self.parse_expression(VariableNode(identifier))
         else:
             self.advance()
@@ -194,7 +233,8 @@ class Parser:
         if self.current_token[0] == "LEFTPAREN":
             self.advance()
             left = self.parse_expression()
-            self.advance()
+        elif self.current_token[0] == "RIGHTPAREN":
+            return left
         elif self.current_token[0] in ["IDENTIFIER", "NUMBER", "BOOLEAN", "STRING"]:
             left = self.create_default(self.current_token[1], self.current_token[0])
             self.advance()
@@ -253,7 +293,21 @@ class Parser:
         return left
 
     
-   
+    def parse_String(self):
+        return self.create_default(self.current_token[1], "STRING")
+
+
+    def parse_args(self):
+        args = []
+        while self.current_token and self.current_token[0] != "RIGHTPAREN":
+            arg = self.parse_expression()
+            args.append(arg)
+            if self.current_token[0] == "COMMA":
+                self.advance()
+        return args
+
+
+
   
   
 
