@@ -41,7 +41,7 @@ class Interpreter:
 
 
             elif isinstance(node, PrintNode):
-                print(self.evaluate(node.expression))
+                print(self.evaluate(node.expression, env))
 
 
             elif isinstance(node, ForNode):
@@ -75,14 +75,17 @@ class Interpreter:
                 funcDecl = env.get(node.identifier)
 
                 localEnv = Enviroment(parent=env)
-                args = []
-                for arg in funcDecl.args:
-                    args.append(self.evaluate(arg))
+                params = []
+                for param in funcDecl.args:
+                    params.append(self.evaluate(param))
                 
-                #if funcDecl.args != None:
-                   # for param, arg in zip(args, node.args):
-                    #    value = self.evaluate(arg)
-                    #    localEnv.set(param, value)
+                args = []
+                for arg in node.args:
+                    args.append(self.evaluate(arg))
+
+                if funcDecl.args != None:
+                    for param, arg in zip(params, args):
+                        localEnv.set(param, arg)
 
                 self.interpret(funcDecl.body, localEnv)
 

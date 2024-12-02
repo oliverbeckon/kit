@@ -156,6 +156,8 @@ class Parser:
     def parse_func(self):
         self.advance()
         identifier = self.parse_String() # Get Name of func
+        self.advance()
+        self.advance()
         args = self.parse_args()
         self.advance()
         body = self.parse_block()
@@ -207,10 +209,11 @@ class Parser:
         identifier = self.current_token[1]
         self.advance()
         if self.current_token[0] == "LEFTPAREN":
-            args = self.parse
-            return FunctionCallNode(identifier, args)
+            return self.parse_functionCall(identifier)
+        
         elif self.current_token[0] in ["PLUS", "MINUS", "TIMES"]:
             value = self.parse_expression(VariableNode(identifier))
+
         else:
             self.advance()
             value = self.parse_expression()
@@ -300,13 +303,25 @@ class Parser:
     def parse_args(self):
         args = []
         while self.current_token and self.current_token[0] != "RIGHTPAREN":
-            arg = self.parse_expression()
-            args.append(arg)
-            if self.current_token[0] == "COMMA":
-                self.advance()
+            if self.current_token[0] != "COMMA":
+                args.append(self.parse_String())
+            self.advance()
         return args
 
 
+    def parse_functionCall(self, identifier):
+        self.advance()
+        args = []
+        while self.current_token and self.current_token[0] != "RIGHTPAREN":
+            if self.current_token[0] != "COMMA":
+                args.append(self.parse_expression())
+            else :
+                self.advance()
+
+        return FunctionCallNode(identifier, args)
+     
+
+        
 
   
   
