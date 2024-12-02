@@ -1,4 +1,4 @@
-from parser import *
+from kitParser import *
 
 
 
